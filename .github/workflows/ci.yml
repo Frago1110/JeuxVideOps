@@ -1,0 +1,52 @@
+name: CI Jeux VideoPS
+
+on:
+  # Lancement manuel
+  workflow_dispatch:
+
+  # Lancement auto lors d'un push
+  push:
+    branches:
+      - "**"
+
+  # Lancement auto lors d'une pull request
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  integration:
+    name: Build, Lint & Test
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        jeu: [SpaceInvaders, TwoShips]
+
+    steps:
+      - name: Récupération du code source
+        uses: actions/checkout@v4
+
+      - name: Configuration de Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Installation des dépendances
+        working-directory: ./${{ matrix.jeu }}
+        run: npm install
+
+      - name: Linter (Google JavaScript Style Guide)
+        working-directory: ./${{ matrix.jeu }}
+        # Vérifie que le code respecte le style Google
+        run: npm run lint
+
+      - name: Exécution des tests
+        working-directory: ./${{ matrix.jeu }}
+        # Lance les tests unitaires et fonctionnels
+        run: npm test
+
+      - name: Audit de sécurité
+        working-directory: ./${{ matrix.jeu }}
+        # Identifie les vulnérabilités connues dans les packages
+        run: npm audit
