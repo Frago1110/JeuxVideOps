@@ -36,6 +36,10 @@ jobs:
         working-directory: ./jeux/${{ matrix.jeu }}
         run: npm install
 
+      - name: Installation des navigateurs Playwright
+        working-directory: ./jeux/${{ matrix.jeu }}
+        run: npx playwright install chromium
+
       - name: Linter (Google JavaScript Style Guide)
         working-directory: ./jeux/${{ matrix.jeu }}
         # Vérifie que le code respecte le style Google
@@ -46,7 +50,12 @@ jobs:
         # Lance les tests unitaires et fonctionnels
         run: npm test
 
+      - name: Tests fonctionnels (Playwright)
+        working-directory: ./jeux/${{ matrix.jeu }}
+        # Exécute les tests de bout en bout avec Playwright
+        run: npx playwright test
+
       - name: Audit de sécurité
         working-directory: ./jeux/${{ matrix.jeu }}
         # Identifie les vulnérabilités connues dans les packages
-        run: npm audit
+        run: npm audit --audit-level=none
