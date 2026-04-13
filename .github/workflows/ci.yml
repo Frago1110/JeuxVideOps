@@ -12,7 +12,7 @@ on:
   # Lancement auto lors d'une pull request
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
   integration:
@@ -33,20 +33,20 @@ jobs:
           node-version: "18"
 
       - name: Installation des dépendances
-        working-directory: ./${{ matrix.jeu }}
+        working-directory: ./jeux/${{ matrix.jeu }}
         run: npm install
 
       - name: Linter (Google JavaScript Style Guide)
-        working-directory: ./${{ matrix.jeu }}
+        working-directory: ./jeux/${{ matrix.jeu }}
         # Vérifie que le code respecte le style Google
         run: npm run lint
 
       - name: Exécution des tests
-        working-directory: ./${{ matrix.jeu }}
+        working-directory: ./jeux/${{ matrix.jeu }}
         # Lance les tests unitaires et fonctionnels
         run: npm test
 
       - name: Audit de sécurité
-        working-directory: ./${{ matrix.jeu }}
+        working-directory: ./jeux/${{ matrix.jeu }}
         # Identifie les vulnérabilités connues dans les packages
         run: npm audit
