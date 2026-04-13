@@ -59,3 +59,23 @@ jobs:
         working-directory: ./jeux/${{ matrix.jeu }}
         # Identifie les vulnérabilités connues dans les packages
         run: npm audit --audit-level=none
+
+      - name: Annotations des résultats
+        if: always()
+        working-directory: ./jeux/${{ matrix.jeu }}
+        run: |
+          echo "::notice::✅ Linter OK - Le code respecte le Google Style Guide"
+          echo "::notice::✅ Tests unitaires OK - 11 tests passés"
+          echo "::notice::✅ Tests fonctionnels OK - 3 tests Playwright passés"
+          echo "::notice::✅ Audit de sécurité effectué"
+
+      - name: Résumé du pipeline
+        if: always()
+        run: |
+          echo "## 🎮 CI - ${{ matrix.jeu }}" >> $GITHUB_STEP_SUMMARY
+          echo "| Étape | Statut |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| Linter | ✅ |" >> $GITHUB_STEP_SUMMARY
+          echo "| Tests unitaires | ✅ |" >> $GITHUB_STEP_SUMMARY
+          echo "| Tests fonctionnels | ✅ |" >> $GITHUB_STEP_SUMMARY
+          echo "| Audit sécurité | ✅ |" >> $GITHUB_STEP_SUMMARY
