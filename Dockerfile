@@ -1,8 +1,9 @@
 # ── PHASE 1 : Build TwoShips ──
-FROM node:18-alpine AS build-twoships
+FROM node:18 AS build-twoships
 WORKDIR /app
+RUN apt-get update && apt-get install -y python3 make g++
 COPY jeux/TwoShips/package*.json ./
-RUN npm install --ignore-scripts
+RUN npm install
 COPY jeux/TwoShips/ ./
 RUN npm run build
 
