@@ -36,9 +36,9 @@ jobs:
         working-directory: ./jeux/${{ matrix.jeu }}
         run: npm install
 
-      - name: Run unit tests
+      - name: Installation des navigateurs Playwright
         working-directory: ./jeux/${{ matrix.jeu }}
-        run: npm test
+        run: npx playwright install chromium
 
       - name: Linter (Google JavaScript Style Guide)
         working-directory: ./jeux/${{ matrix.jeu }}
