@@ -71,7 +71,7 @@ jobs:
         run: npm run build
 
       - name: Lancer le serveur et tester
-        run: npx start-server-and-test serve http://localhost:5000/TwoShips/ test:e2e
+        run: npx start-server-and-test serve http://localhost:5000/JeuxVideoOps/TwoShips/ test:e2e
 
       - name: Audit de sécurité
         run: npm audit --audit-level=none
