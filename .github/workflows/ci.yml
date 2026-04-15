@@ -74,7 +74,7 @@ jobs:
         run: npm run serve &
 
       - name: Attendre que le serveur soit prêt
-        run: npx wait-on http://localhost:4173
+        run: npx wait-on http://localhost:5000
 
       - name: Tests fonctionnels (Cypress)
         run: npm run test:e2e
