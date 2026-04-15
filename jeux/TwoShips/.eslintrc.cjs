@@ -16,10 +16,12 @@ module.exports = {
   overrides: [
     {
       files: ['cypress/e2e/**/*.cy.js'],
-      env: {
-        'cypress/globals': true,
+      globals: {
+        cy: 'readonly',
+        describe: 'readonly',
+        it: 'readonly',
+        beforeEach: 'readonly',
       },
-      plugins: ['cypress'],
     },
   ],
 };
