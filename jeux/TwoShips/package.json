@@ -9,7 +9,8 @@
     "build": "vite build",
     "serve": "vite preview",
     "test": "node --experimental-vm-modules node_modules/.bin/jest",
-    "lint": "eslint src/math.test.js tests/"
+    "lint": "eslint src/math.test.js tests/",
+    "test:e2e": "cypress run --headless"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,7 @@
     "@playwright/test": "1.59.1",
     "@typescript-eslint/eslint-plugin": "8.58.1",
     "@typescript-eslint/parser": "8.58.1",
+    "cypress": "15.13.1",
     "del": "6.0.0",
     "escape-string-regexp": "5.0.0",
     "eslint": "8.57.1",
@@ -46,7 +48,8 @@
     "roadroller": "2.1.0",
     "rollup": "2.56.3",
     "through2": "4.0.2",
-    "vite": "2.5.6"
+    "vite": "2.5.6",
+    "wait-on": "9.0.5"
   },
   "resolutions": {
     "anymatch": "3.1.2",
@@ -61,6 +64,8 @@
   },
   "keywords": [],
   "jest": {
-  "testPathIgnorePatterns": ["tests/"]
-}
+    "testPathIgnorePatterns": [
+      "tests/"
+    ]
+  }
 }

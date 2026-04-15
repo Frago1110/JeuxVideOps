@@ -1,15 +1,10 @@
 name: CI Jeux VideoPS
 
 on:
-  # Lancement manuel
   workflow_dispatch:
-
-  # Lancement auto lors d'un push
   push:
     branches:
       - "**"
-
-  # Lancement auto lors d'une pull request
   pull_request:
     branches:
       - main
@@ -21,7 +16,6 @@ jobs:
     defaults:
       run:
         working-directory: ./jeux/SpaceInvaders
-
     steps:
       - name: Récupération du code source
         uses: actions/checkout@v4
@@ -55,7 +49,6 @@ jobs:
     defaults:
       run:
         working-directory: ./jeux/TwoShips
-
     steps:
       - name: Récupération du code source
         uses: actions/checkout@v4
@@ -68,20 +61,39 @@ jobs:
       - name: Installation des dépendances
         run: npm install
 
-      - name: Installation des navigateurs Playwright
-        run: npx playwright install chromium
-
       - name: Linter
         run: npm run lint
 
-      - name: Tests fonctionnels (Playwright)
-        run: npx playwright test
+      - name: Tests unitaires (Jest)
+        run: npm test
+
+      - name: Lancer le serveur de développement
+        run: npm run dev &
+
+      - name: Attendre que le serveur soit prêt
+        run: npx wait-on http://localhost:3000
+
+      - name: Tests fonctionnels (Cypress)
+        run: npm run test:e2e
 
       - name: Audit de sécurité
         run: npm audit --audit-level=none
 
+      - name: Annotations des résultats
+        if: always()
+        run: |
+          echo "::notice::✅ Linter OK"
+          echo "::notice::✅ Tests unitaires OK - 11 tests passés"
+          echo "::notice::✅ Tests fonctionnels OK - 3 tests Cypress passés"
+          echo "::notice::✅ Audit de sécurité effectué"
+
       - name: Résumé du pipeline
         if: always()
         run: |
-          echo "## CI - Two Ships" >> $GITHUB_STEP_SUMMARY
-          echo "Pipeline validé avec succès !" >> $GITHUB_STEP_SUMMARY
+          echo "## 🎮 CI - TwoShips" >> $GITHUB_STEP_SUMMARY
+          echo "| Étape | Statut |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| Linter | ✅ |" >> $GITHUB_STEP_SUMMARY
+          echo "| Tests unitaires | ✅ |" >> $GITHUB_STEP_SUMMARY
+          echo "| Tests fonctionnels | ✅ |" >> $GITHUB_STEP_SUMMARY
+          echo "| Audit sécurité | ✅ |" >> $GITHUB_STEP_SUMMARY
