@@ -72,9 +72,7 @@ jobs:
 
       - name: Lancer le serveur de preview
         run: npm run serve &
-
-      - name: Attendre que le serveur soit prêt
-        run: npx wait-on http-get://localhost:5000/TwoShips/
+             npx wait-on http-get://localhost:5000/TwoShips/
 
       - name: Tests fonctionnels (Cypress)
         run: npm run test:e2e
