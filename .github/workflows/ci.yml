@@ -67,11 +67,14 @@ jobs:
       - name: Tests unitaires (Jest)
         run: npm test
 
-      - name: Lancer le serveur de développement
-        run: npm run dev &
+      - name: Build du jeu
+        run: npm run build
+
+      - name: Lancer le serveur de preview
+        run: npm run serve &
 
       - name: Attendre que le serveur soit prêt
-        run: npx wait-on http://localhost:3000
+        run: npx wait-on http://localhost:4173
 
       - name: Tests fonctionnels (Cypress)
         run: npm run test:e2e
@@ -85,15 +88,3 @@ jobs:
           echo "::notice::✅ Linter OK"
           echo "::notice::✅ Tests unitaires OK - 11 tests passés"
           echo "::notice::✅ Tests fonctionnels OK - 3 tests Cypress passés"
-          echo "::notice::✅ Audit de sécurité effectué"
-
-      - name: Résumé du pipeline
-        if: always()
-        run: |
-          echo "## 🎮 CI - TwoShips" >> $GITHUB_STEP_SUMMARY
-          echo "| Étape | Statut |" >> $GITHUB_STEP_SUMMARY
-          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
-          echo "| Linter | ✅ |" >> $GITHUB_STEP_SUMMARY
-          echo "| Tests unitaires | ✅ |" >> $GITHUB_STEP_SUMMARY
-          echo "| Tests fonctionnels | ✅ |" >> $GITHUB_STEP_SUMMARY
-          echo "| Audit sécurité | ✅ |" >> $GITHUB_STEP_SUMMARY
