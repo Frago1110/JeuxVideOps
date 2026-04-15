@@ -1,5 +1,5 @@
 export default {
-  base: '/TwoShips/',
+  base: '/JeuxVideoOps/TwoShips/',
   preview: {
     port: 5000,
   },
