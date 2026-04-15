@@ -155,6 +155,7 @@ jobs:
           cp -r app-web/. public/
           cp -r jeux/TwoShips/dist/. public/TwoShips/
           cp -r jeux/SpaceInvaders/build/. public/SpaceInvaders/
+          touch public/.nojekyll
 
       - name: Debug - vérifier les fichiers
         run: |
