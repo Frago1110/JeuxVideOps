@@ -82,3 +82,10 @@ jobs:
           echo "::notice::✅ Linter OK"
           echo "::notice::✅ Tests unitaires OK - 11 tests passés"
           echo "::notice::✅ Tests fonctionnels OK - 3 tests Cypress passés"
+
+      - name: Build et Push de l'image Docker
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/jeuxvideops:latest
