@@ -156,6 +156,15 @@ jobs:
           cp -r jeux/TwoShips/dist/. public/TwoShips/
           cp -r jeux/SpaceInvaders/build/. public/SpaceInvaders/
 
+      - name: Debug - vérifier les fichiers
+        run: |
+          echo "=== Contenu de public/ ==="
+          ls -la public/
+          echo "=== Contenu de public/TwoShips/ ==="
+          ls -la public/TwoShips/
+          echo "=== Contenu de public/TwoShips/assets/ ==="
+          ls -la public/TwoShips/assets/
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
