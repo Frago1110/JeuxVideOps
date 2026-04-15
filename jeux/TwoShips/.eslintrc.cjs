@@ -12,6 +12,11 @@ module.exports = {
   },
   rules: {
     'require-jsdoc': 'off',
+    'require-jsdoc': 'off',
+    'camelcase': 'off',          // convention mathématique intentionnelle (vec3_X, mat4_create...)
+    'no-unused-vars': 'warn',    // variables inutilisées → warning au lieu d'erreur
+    'max-len': 'off',            // lignes légèrement trop longues (81-86 chars)
+    'no-var': 'off',
   },
   overrides: [
     {

@@ -9,7 +9,7 @@
     "build": "vite build",
     "serve": "vite preview",
     "test": "node --experimental-vm-modules node_modules/.bin/jest",
-    "lint": "eslint src/math.test.js cypress/e2e/",
+    "lint": "eslint src/ cypress/e2e/",
     "test:e2e": "cypress run --headless"
   },
   "repository": {
