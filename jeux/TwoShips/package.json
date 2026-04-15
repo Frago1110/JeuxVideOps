@@ -9,7 +9,7 @@
     "build": "vite build",
     "serve": "vite preview",
     "test": "node --experimental-vm-modules node_modules/.bin/jest",
-    "lint": "eslint src/math.test.js tests/",
+    "lint": "eslint src/math.test.js cypress/e2e/",
     "test:e2e": "cypress run --headless"
   },
   "repository": {
@@ -23,7 +23,6 @@
   },
   "homepage": "https://github.com/razh/js13k-2021#readme",
   "devDependencies": {
-    "@playwright/test": "1.59.1",
     "@typescript-eslint/eslint-plugin": "8.58.1",
     "@typescript-eslint/parser": "8.58.1",
     "cypress": "15.13.1",
@@ -65,7 +64,7 @@
   "keywords": [],
   "jest": {
     "testPathIgnorePatterns": [
-      "tests/"
+      "cypress/"
     ]
   }
 }
