@@ -13,4 +13,13 @@ module.exports = {
   rules: {
     'require-jsdoc': 'off',
   },
+  overrides: [
+    {
+      files: ['cypress/e2e/**/*.cy.js'],
+      env: {
+        'cypress/globals': true,
+      },
+      plugins: ['cypress'],
+    },
+  ],
 };
