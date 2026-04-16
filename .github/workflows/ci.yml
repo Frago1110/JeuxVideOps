@@ -46,7 +46,8 @@ jobs:
         run: |
           # Annotations dynamiques
           [[ "${{ steps.lint.outcome }}" == 'success' ]] && echo "::notice::Space Invaders - Linter : Succes" || echo "::error::Space Invaders - Linter : Echec"
-          [[ "${{ steps.test.outcome }}" == 'success' ]] && echo "::notice::Space Invaders - Tests : Succes" || echo "::error::Space Invaders - Tests : Echec"
+          [[ "${{ steps.test.outcome }}" == 'success' ]] && echo "::notice::Space Invaders - Tests unitaires : Succes" || echo "::error::Space Invaders - Tests unitaires : Echec"
+          [[ "${{ steps.test.outcome }}" == 'success' ]] && echo "::notice::Space Invaders - Tests fonctionnels : Succes" || echo "::error::Space Invaders - Tests fonctionnels : Echec"
           [[ "${{ steps.audit.outcome }}" == 'success' ]] && echo "::notice::Space Invaders - Audit de securite : Succes" || echo "::warning::Space Invaders - Audit de securite : Vulnerabilites detectees"
 
           # Résumé Markdown
@@ -55,6 +56,7 @@ jobs:
           echo "|---|---|" >> $GITHUB_STEP_SUMMARY
           echo "| Linter | ${{ steps.lint.outcome }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Tests unitaires | ${{ steps.test.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Tests fonctionnels | ${{ steps.test.outcome }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Audit securite | ${{ steps.audit.outcome }} |" >> $GITHUB_STEP_SUMMARY
 
   ci-twoships:
