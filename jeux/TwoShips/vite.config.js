@@ -1,5 +1,5 @@
 export default {
-  base: process.env.VITE_BASE_URL || '/JeuxVideoOps/TwoShips/',
+  base: process.env.VITE_BASE_URL || '/JeuxVideOps/TwoShips/',
   preview: {
     port: 5000,
   },
