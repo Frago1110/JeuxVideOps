@@ -91,12 +91,8 @@ jobs:
         run: npm run build
 
       - name: Lancer le serveur et tester
-<<<<<<< HEAD
         id: test_e2e
-        run: npx start-server-and-test serve http://localhost:5000/JeuxVideoOps/TwoShips/ test:e2e
-=======
         run: npx start-server-and-test serve http://localhost:5000/JeuxVideOps/TwoShips/ test:e2e
->>>>>>> 298c639 (fix: correct base URL case for GitHub Pages (JeuxVideOps))
 
       - name: Audit de sécurité
         id: audit
