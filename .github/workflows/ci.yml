@@ -26,22 +26,36 @@ jobs:
           node-version: "20"
 
       - name: Installation des dépendances
+        id: install
         run: npm install
 
       - name: Linter (ESLint)
+        id: lint
         run: npm run lint
 
       - name: Exécution des tests unitaires et fonctionnels (Jest)
+        id: test
         run: npm test
 
       - name: Audit de sécurité
+        id: audit
         run: npm audit --audit-level=none
 
-      - name: Résumé du pipeline
+      - name: Annotations et Résumé du pipeline
         if: always()
         run: |
+          # Annotations dynamiques
+          [[ "${{ steps.lint.outcome }}" == 'success' ]] && echo "::notice::Space Invaders - Linter : Succes" || echo "::error::Space Invaders - Linter : Echec"
+          [[ "${{ steps.test.outcome }}" == 'success' ]] && echo "::notice::Space Invaders - Tests : Succes" || echo "::error::Space Invaders - Tests : Echec"
+          [[ "${{ steps.audit.outcome }}" == 'success' ]] && echo "::notice::Space Invaders - Audit de securite : Succes" || echo "::warning::Space Invaders - Audit de securite : Vulnerabilites detectees"
+
+          # Résumé Markdown
           echo "## CI - Space Invaders" >> $GITHUB_STEP_SUMMARY
-          echo "Pipeline validé avec succès !" >> $GITHUB_STEP_SUMMARY
+          echo "| Etape | Statut |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| Linter | ${{ steps.lint.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Tests unitaires | ${{ steps.test.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Audit securite | ${{ steps.audit.outcome }} |" >> $GITHUB_STEP_SUMMARY
 
   ci-twoships:
     name: CI - Two Ships
@@ -59,40 +73,46 @@ jobs:
           node-version: "20"
 
       - name: Installation des dépendances
+        id: install
         run: npm install
 
       - name: Linter
+        id: lint
         run: npm run lint
 
       - name: Tests unitaires (Jest)
+        id: test_unit
         run: npm test
 
       - name: Build du jeu
+        id: build
         run: npm run build
 
       - name: Lancer le serveur et tester
+        id: test_e2e
         run: npx start-server-and-test serve http://localhost:5000/JeuxVideoOps/TwoShips/ test:e2e
 
       - name: Audit de sécurité
+        id: audit
         run: npm audit --audit-level=none
 
-      - name: Annotations des résultats
+      - name: Annotations et Résumé du pipeline
         if: always()
         run: |
-          echo "::notice::✅ Linter OK"
-          echo "::notice::✅ Tests unitaires OK - 11 tests passés"
-          echo "::notice::✅ Tests fonctionnels OK - 3 tests Cypress passés"
+          # Annotations dynamiques
+          [[ "${{ steps.lint.outcome }}" == 'success' ]] && echo "::notice::Two Ships - Linter : Succes" || echo "::error::Two Ships - Linter : Echec"
+          [[ "${{ steps.test_unit.outcome }}" == 'success' ]] && echo "::notice::Two Ships - Tests unitaires : Succes" || echo "::error::Two Ships - Tests unitaires : Echec"
+          [[ "${{ steps.test_e2e.outcome }}" == 'success' ]] && echo "::notice::Two Ships - Tests fonctionnels : Succes" || echo "::error::Two Ships - Tests fonctionnels : Echec"
+          [[ "${{ steps.audit.outcome }}" == 'success' ]] && echo "::notice::Two Ships - Audit de securite : Succes" || echo "::warning::Two Ships - Audit de securite : Vulnerabilites detectees"
 
-      - name: Résumé du pipeline
-        if: always()
-        run: |
-          echo "## 🎮 CI - TwoShips" >> $GITHUB_STEP_SUMMARY
-          echo "| Étape | Statut |" >> $GITHUB_STEP_SUMMARY
+          # Résumé Markdown
+          echo "## CI - TwoShips" >> $GITHUB_STEP_SUMMARY
+          echo "| Etape | Statut |" >> $GITHUB_STEP_SUMMARY
           echo "|---|---|" >> $GITHUB_STEP_SUMMARY
-          echo "| Linter | ✅ |" >> $GITHUB_STEP_SUMMARY
-          echo "| Tests unitaires | ✅ |" >> $GITHUB_STEP_SUMMARY
-          echo "| Tests fonctionnels | ✅ |" >> $GITHUB_STEP_SUMMARY
-          echo "| Audit sécurité | ✅ |" >> $GITHUB_STEP_SUMMARY
+          echo "| Linter | ${{ steps.lint.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Tests unitaires | ${{ steps.test_unit.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Tests fonctionnels | ${{ steps.test_e2e.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Audit securite | ${{ steps.audit.outcome }} |" >> $GITHUB_STEP_SUMMARY
 
   deploy:
     name: Build & Push Docker Image
@@ -173,4 +193,4 @@ jobs:
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4  
+        uses: actions/deploy-pages@v4
