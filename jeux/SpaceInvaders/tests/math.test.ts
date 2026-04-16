@@ -35,6 +35,12 @@ describe('Tests exigés pour Space Invaders', function() {
       ).toBeCloseTo(98.30248290540649, 5);
     });
 
+    it('distance: calcule la distance avec un angle négatif', function() {
+      expect(
+          distance({angle: 5, radius: 50}, {angle: -10, radius: 100}),
+      ).toBeCloseTo(141.76346189546945, 5);
+    });
+
     it('toVector: convertit des coordonnées polaires en vecteur cartésien', function() {
       const result = toVector({angle: 5, radius: 50});
       expect(result.x).toBeCloseTo(14.183109273161312, 5);
