@@ -17,15 +17,12 @@
   },
   "plugins": ["@typescript-eslint"],
   "rules": {
-    "require-jsdoc": "off",
-    "valid-jsdoc": "off"
-  },
-  "rules": {
+    "valid-jsdoc": "off",
     "max-len": "off",
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "guard-for-in": "off",
-    "require-jsdoc": "off" 
+    "require-jsdoc": "off"
   }
 }
