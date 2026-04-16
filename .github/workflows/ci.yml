@@ -39,7 +39,7 @@ jobs:
 
       - name: Audit de sécurité
         id: audit
-        run: npm audit --audit-level=moderate
+        run: npm audit --audit-level=high
 
       - name: Annotations et Résumé du pipeline
         if: always()
@@ -96,7 +96,7 @@ jobs:
 
       - name: Audit de sécurité
         id: audit
-        run: npm audit --audit-level=moderate
+        run: npm audit --audit-level=high
 
       - name: Annotations et Résumé du pipeline
         if: always()
