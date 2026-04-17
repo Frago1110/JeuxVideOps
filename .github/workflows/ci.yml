@@ -41,8 +41,6 @@ jobs:
         id: audit
         run: | 
           npm audit --audit-level=none
-          run: |
-          npm audit --audit-level=none
           npm audit --json > /tmp/audit.json 2>/dev/null || true
           CRITICAL=$(jq '.metadata.vulnerabilities.critical // 0' /tmp/audit.json)
           HIGH=$(jq '.metadata.vulnerabilities.high // 0' /tmp/audit.json)
@@ -77,6 +75,20 @@ jobs:
           echo "| Tests unitaires | ${{ steps.test.outcome }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Tests fonctionnels | ${{ steps.test.outcome }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Audit securite | ${{ steps.audit.outcome }} |" >> $GITHUB_STEP_SUMMARY
+
+  security-scan:
+    name: Détection de secrets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupération du code source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Détection de secrets (Gitleaks)
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   ci-twoships:
     name: CI - Two Ships
@@ -117,15 +129,13 @@ jobs:
         id: audit
         run: | 
           npm audit --audit-level=none
-          run: |
-          npm audit --audit-level=none
           npm audit --json > /tmp/audit.json 2>/dev/null || true
           CRITICAL=$(jq '.metadata.vulnerabilities.critical // 0' /tmp/audit.json)
           HIGH=$(jq '.metadata.vulnerabilities.high // 0' /tmp/audit.json)
           MODERATE=$(jq '.metadata.vulnerabilities.moderate // 0' /tmp/audit.json)
           LOW=$(jq '.metadata.vulnerabilities.low // 0' /tmp/audit.json)
           TOTAL=$(jq '.metadata.vulnerabilities.total // 0' /tmp/audit.json)
-          echo "### Vulnerabilites - Space Invaders" >> $GITHUB_STEP_SUMMARY
+          echo "### Vulnerabilites - Two Ships" >> $GITHUB_STEP_SUMMARY
           echo "| Severite | Nombre |" >> $GITHUB_STEP_SUMMARY
           echo "|---|---|" >> $GITHUB_STEP_SUMMARY
           echo "| Critique | $CRITICAL |" >> $GITHUB_STEP_SUMMARY
@@ -154,10 +164,17 @@ jobs:
           echo "| Tests fonctionnels | ${{ steps.test_e2e.outcome }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Audit securite | ${{ steps.audit.outcome }} |" >> $GITHUB_STEP_SUMMARY
 
+      - name: Upload screenshots Cypress
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots
+          path: jeux/TwoShips/cypress/screenshots/
+
   deploy:
     name: Build & Push Docker Image
     runs-on: ubuntu-latest
-    needs: [ci-twoships, ci-spaceinvaders]
+    needs: [ci-twoships, ci-spaceinvaders, security-scan]
     if: github.ref == 'refs/heads/main'
     permissions:
       contents: read
@@ -180,10 +197,11 @@ jobs:
           push: true
           tags: ghcr.io/frago1110/jeuxvideops:latest
 
+
   pages:
     name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
-    needs: [ci-twoships, ci-spaceinvaders]
+    needs: [ci-twoships, ci-spaceinvaders, security-scan]
     if: github.ref == 'refs/heads/main'
     permissions:
       contents: read
