@@ -12,3 +12,7 @@ describe('Tests fonctionnels du jeu', () => {
     cy.get('h1').should('contain.text', 'Two');
   });
 });
+it('TEST TEMPORAIRE - doit échouer', () => {
+  cy.visit('/');
+  cy.get('#element-qui-nexiste-pas').should('be.visible');
+});
