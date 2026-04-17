@@ -39,7 +39,26 @@ jobs:
 
       - name: Audit de sécurité
         id: audit
-        run: npm audit --audit-level=none
+        run: | 
+          npm audit --audit-level=none
+          run: |
+          npm audit --audit-level=none
+          npm audit --json > /tmp/audit.json 2>/dev/null || true
+          CRITICAL=$(jq '.metadata.vulnerabilities.critical // 0' /tmp/audit.json)
+          HIGH=$(jq '.metadata.vulnerabilities.high // 0' /tmp/audit.json)
+          MODERATE=$(jq '.metadata.vulnerabilities.moderate // 0' /tmp/audit.json)
+          LOW=$(jq '.metadata.vulnerabilities.low // 0' /tmp/audit.json)
+          TOTAL=$(jq '.metadata.vulnerabilities.total // 0' /tmp/audit.json)
+          echo "### Vulnerabilites - Space Invaders" >> $GITHUB_STEP_SUMMARY
+          echo "| Severite | Nombre |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| Critique | $CRITICAL |" >> $GITHUB_STEP_SUMMARY
+          echo "| Haute | $HIGH |" >> $GITHUB_STEP_SUMMARY
+          echo "| Moderee | $MODERATE |" >> $GITHUB_STEP_SUMMARY
+          echo "| Faible | $LOW |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Total** | **$TOTAL** |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "> Vulnerabilites dans les dependances de dev du projet original js13k-2021. Sans impact sur le code navigateur. Mise a jour impossible sans casser la compatibilite." >> $GITHUB_STEP_SUMMARY
 
       - name: Annotations et Résumé du pipeline
         if: always()
@@ -96,8 +115,27 @@ jobs:
 
       - name: Audit de sécurité
         id: audit
-        run: npm audit --audit-level=none
-
+        run: | 
+          npm audit --audit-level=none
+          run: |
+          npm audit --audit-level=none
+          npm audit --json > /tmp/audit.json 2>/dev/null || true
+          CRITICAL=$(jq '.metadata.vulnerabilities.critical // 0' /tmp/audit.json)
+          HIGH=$(jq '.metadata.vulnerabilities.high // 0' /tmp/audit.json)
+          MODERATE=$(jq '.metadata.vulnerabilities.moderate // 0' /tmp/audit.json)
+          LOW=$(jq '.metadata.vulnerabilities.low // 0' /tmp/audit.json)
+          TOTAL=$(jq '.metadata.vulnerabilities.total // 0' /tmp/audit.json)
+          echo "### Vulnerabilites - Space Invaders" >> $GITHUB_STEP_SUMMARY
+          echo "| Severite | Nombre |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| Critique | $CRITICAL |" >> $GITHUB_STEP_SUMMARY
+          echo "| Haute | $HIGH |" >> $GITHUB_STEP_SUMMARY
+          echo "| Moderee | $MODERATE |" >> $GITHUB_STEP_SUMMARY
+          echo "| Faible | $LOW |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Total** | **$TOTAL** |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "> Vulnerabilites dans les dependances de dev du projet original js13k-2021. Sans impact sur le code navigateur. Mise a jour impossible sans casser la compatibilite." >> $GITHUB_STEP_SUMMARY
+      
       - name: Annotations et Résumé du pipeline
         if: always()
         run: |
